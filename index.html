@@ -101,13 +101,36 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 51;
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: block;
+      width: 118px;
+      height: auto;
+      transition: transform 180ms ease, opacity 180ms ease;
+    }
+
+    .brand-logo:hover {
+      opacity: 0.85;
+      transform: scale(1.02);
+    }
+
+    .brand-logo-light {
+      display: block;
+      width: 118px;
+      height: auto;
+      transition: opacity 180ms ease;
+    }
+
+    .brand-logo-light:hover {
+      opacity: 0.85;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      height: 28px;
     }
 
     .test-drive {
@@ -339,6 +362,13 @@
       pointer-events: auto;
     }
 
+    .story-eyebrow,
+    .story-content h2,
+    .story-copy {
+      will-change: transform, opacity;
+      transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 240ms ease-out;
+    }
+
     .story-eyebrow {
       font-size: 17.6px;
       font-weight: 700;
@@ -429,7 +459,6 @@
       font-weight: 500;
       letter-spacing: 2.48px;
       color: #919c94;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
 
     .footer-hero h2 {
@@ -440,7 +469,6 @@
       font-weight: 400;
       line-height: 0.96;
       letter-spacing: -4.3px;
-      text-shadow: 0 4px 28px rgba(0, 0, 0, 0.75);
     }
 
     .footer-subtitle {
@@ -450,7 +478,59 @@
       font-size: 17.3px;
       font-weight: 400;
       color: #ccd1c9;
-      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Footer Typography Smooth Entrance Animation */
+    .footer-kicker,
+    .footer-hero h2,
+    .footer-subtitle,
+    .informed-button {
+      transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1), opacity 800ms ease;
+      will-change: transform, opacity;
+    }
+
+    .footer:not(.is-in-view) .footer-kicker {
+      opacity: 0;
+      transform: translate3d(0, 30px, 0);
+    }
+
+    .footer:not(.is-in-view) .footer-hero h2 {
+      opacity: 0;
+      transform: translate3d(0, 50px, 0);
+    }
+
+    .footer:not(.is-in-view) .footer-subtitle {
+      opacity: 0;
+      transform: translate3d(0, 35px, 0);
+    }
+
+    .footer:not(.is-in-view) .informed-button {
+      opacity: 0;
+      transform: translate3d(0, 25px, 0);
+    }
+
+    .footer.is-in-view .footer-kicker {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition-delay: 60ms;
+    }
+
+    .footer.is-in-view .footer-hero h2 {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition-delay: 160ms;
+    }
+
+    .footer.is-in-view .footer-subtitle {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition-delay: 280ms;
+    }
+
+    .footer.is-in-view .informed-button {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition-delay: 380ms;
     }
 
     .informed-button {
@@ -741,11 +821,8 @@
         <img src="/assets/e43e2.svg" width="62" height="31" alt="" />
       </button>
 
-      <a class="nav-brand" href="#top" aria-label="GWM home">
-        <span class="brand" aria-label="GWM">
-          <img src="/assets/73e86.svg" width="41" height="28" alt="" />
-          <img src="/assets/0284b.svg" width="84" height="18" alt="" />
-        </span>
+      <a class="nav-brand" href="#top" aria-label="GWM Bangladesh home">
+        <img class="brand-logo" src="/assets/gwm-bangladesh-logo.svg" width="118" height="47" alt="GWM Bangladesh" />
       </a>
 
       <a class="test-drive" href="#contact">
@@ -776,7 +853,7 @@
               landscapes, and unforgettable places to explore.
             </p>
             <p class="price">
-              <span>From*</span> 36k BDT
+              <span>From*</span> 360k BDT
             </p>
             <a class="primary-button" href="#stories">
               <img src="/assets/3136c.svg" width="32" height="31" alt="" />
@@ -898,12 +975,9 @@
 
       <div class="brand-footer">
         <div class="footer-brand-row">
-          <span class="brand" aria-label="GWM">
-            <img src="/assets/48238.svg" width="41" height="28" alt="" />
-            <img src="/assets/95438.svg" width="84" height="18" alt="" />
-          </span>
-          <span class="brand-divider"></span>
-          <span class="country">BANGLADESH</span>
+          <a href="#top" aria-label="GWM Bangladesh home">
+            <img class="brand-logo-light" src="/assets/gwm-bangladesh-logo-light.svg" width="118" height="47" alt="GWM Bangladesh" />
+          </a>
           <a class="back-to-top" href="#top">
             Back to top
             <img src="/assets/5b348.svg" width="22" height="32" alt="" />
@@ -1010,17 +1084,10 @@
         cachedTrackHeight = Math.max(1, scrollTrack.offsetHeight - displayHeight);
       }
 
-      // Sub-frame alpha-blended rendering for liquid-smooth continuous rotation
-      function renderBlended(frameFloat) {
-        const clampedFloat = Math.max(0, Math.min(TOTAL_FRAMES - 1, frameFloat));
-        const indexA = Math.floor(clampedFloat);
-        const indexB = Math.min(TOTAL_FRAMES - 1, indexA + 1);
-        const fraction = clampedFloat - indexA;
-
-        const imgA = getBestImage(indexA);
-        const imgB = (indexB !== indexA) ? getBestImage(indexB) : null;
-
-        if (!imgA) return;
+      // Single crisp frame rendering (restoring previous crisp frame animation)
+      function renderCanvas(frameIndex) {
+        const img = getBestImage(frameIndex);
+        if (!img) return;
 
         const dpr = window.devicePixelRatio || 1;
         const width = window.innerWidth;
@@ -1060,58 +1127,93 @@
 
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
-
-        // Draw primary base frame
-        ctx.globalAlpha = 1.0;
-        ctx.drawImage(imgA, drawX, drawY, drawW, drawH);
-
-        // Smooth cross-fade to next frame for sub-pixel analog motion
-        if (imgB && fraction > 0.005) {
-          ctx.globalAlpha = fraction;
-          ctx.drawImage(imgB, drawX, drawY, drawW, drawH);
-          ctx.globalAlpha = 1.0;
-        }
+        ctx.drawImage(img, drawX, drawY, drawW, drawH);
 
         ctx.restore();
       }
 
-      // Smooth section visibility interpolation
-      function calcVisibility(progress, enterStart, enterEnd, exitStart, exitEnd) {
-        if (progress < enterStart || progress > exitEnd) return 0;
-        if (progress >= enterEnd && progress <= exitStart) return 1;
-        if (progress < enterEnd) {
-          return (progress - enterStart) / (enterEnd - enterStart);
+      // Staggered text animation for each story section
+      function updateStoryAnimation(storyEl, progress, enterStart, enterEnd, exitStart, exitEnd) {
+        if (!storyEl) return;
+        if (progress < enterStart || progress > exitEnd) {
+          storyEl.style.opacity = '0';
+          storyEl.style.pointerEvents = 'none';
+          return;
         }
-        return 1 - (progress - exitStart) / (exitEnd - exitStart);
-      }
 
-      function applyLayerStyle(el, opacity) {
-        const clamped = Math.max(0, Math.min(1, opacity));
-        const translateY = (1 - clamped) * 20;
-        el.style.opacity = clamped.toFixed(3);
-        el.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0)`;
-        el.style.pointerEvents = clamped > 0.1 ? 'auto' : 'none';
+        const eyebrow = storyEl.querySelector('.story-eyebrow');
+        const h2 = storyEl.querySelector('h2');
+        const copy = storyEl.querySelector('.story-copy');
+
+        let clampedOpacity = 0;
+        let yOffset = 0;
+
+        if (progress < enterEnd) {
+          // Entering: slides up into position
+          const t = Math.max(0, Math.min(1, (progress - enterStart) / (enterEnd - enterStart)));
+          clampedOpacity = t;
+          yOffset = (1 - t) * 40;
+        } else if (progress <= exitStart) {
+          // Settled: full opacity at rest
+          clampedOpacity = 1;
+          yOffset = 0;
+        } else {
+          // Exiting: floats upward gently and dissolves
+          const t = Math.max(0, Math.min(1, (progress - exitStart) / (exitEnd - exitStart)));
+          clampedOpacity = 1 - t;
+          yOffset = -t * 30;
+        }
+
+        storyEl.style.opacity = clampedOpacity > 0.01 ? '1' : '0';
+        storyEl.style.pointerEvents = clampedOpacity > 0.2 ? 'auto' : 'none';
+
+        if (eyebrow) {
+          eyebrow.style.opacity = clampedOpacity.toFixed(3);
+          eyebrow.style.transform = `translate3d(0, ${(yOffset * 0.7).toFixed(1)}px, 0)`;
+        }
+        if (h2) {
+          h2.style.opacity = clampedOpacity.toFixed(3);
+          h2.style.transform = `translate3d(0, ${(yOffset * 1.0).toFixed(1)}px, 0)`;
+        }
+        if (copy) {
+          copy.style.opacity = clampedOpacity.toFixed(3);
+          copy.style.transform = `translate3d(0, ${(yOffset * 1.25).toFixed(1)}px, 0)`;
+        }
       }
 
       function updateSections(progress) {
-        // Hero: full at 0, smoothly dissolves away
-        const heroOpacity = progress < 0.10 ? 1 : Math.max(0, 1 - (progress - 0.10) / 0.08);
-        applyLayerStyle(heroLayer, heroOpacity);
+        // Hero: smooth text animation on scroll
+        if (heroLayer) {
+          const heroOpacity = progress < 0.10 ? 1 : Math.max(0, 1 - (progress - 0.10) / 0.08);
+          const introY = (1 - heroOpacity) * -25;
+          const specY = (1 - heroOpacity) * 25;
+
+          const introEl = heroLayer.querySelector('.introduction');
+          const specsEl = heroLayer.querySelector('.specifications');
+
+          if (introEl) {
+            introEl.style.opacity = heroOpacity.toFixed(3);
+            introEl.style.transform = `translate3d(0, ${introY.toFixed(1)}px, 0)`;
+            introEl.style.pointerEvents = heroOpacity > 0.1 ? 'auto' : 'none';
+          }
+          if (specsEl) {
+            specsEl.style.opacity = heroOpacity.toFixed(3);
+            specsEl.style.transform = `translate3d(0, ${specY.toFixed(1)}px, 0)`;
+            specsEl.style.pointerEvents = heroOpacity > 0.1 ? 'auto' : 'none';
+          }
+        }
 
         // Story 0 (FORCE OF FOUR)
-        const s0Opacity = calcVisibility(progress, 0.18, 0.26, 0.38, 0.45);
-        applyLayerStyle(story0, s0Opacity);
+        updateStoryAnimation(story0, progress, 0.18, 0.26, 0.38, 0.45);
 
         // Story 1 (POWER WITHIN)
-        const s1Opacity = calcVisibility(progress, 0.45, 0.52, 0.62, 0.69);
-        applyLayerStyle(story1, s1Opacity);
+        updateStoryAnimation(story1, progress, 0.45, 0.52, 0.62, 0.69);
 
         // Story 2 (POWER IN SYNC)
-        const s2Opacity = calcVisibility(progress, 0.69, 0.76, 0.86, 0.93);
-        applyLayerStyle(story2, s2Opacity);
+        updateStoryAnimation(story2, progress, 0.69, 0.76, 0.86, 0.93);
       }
 
-      // Fast, non-blocking scroll listener without DOM reflows
+      // Fast scroll listener without DOM reflows
       function onScroll() {
         targetProgress = Math.max(0, Math.min(1, window.scrollY / cachedTrackHeight));
       }
@@ -1122,23 +1224,25 @@
         onScroll();
       });
 
-      // Ultra-smooth RAF animation loop with calibrated spring/lerp damping
+      // Restored previous snappy & responsive animation loop
+      let lastRenderedIndex = -1;
+
       function animate() {
-        const ease = 0.075;
+        const ease = 0.09;
         const diff = targetProgress - currentProgress;
 
-        if (Math.abs(diff) > 0.00005) {
+        if (Math.abs(diff) > 0.0001) {
           currentProgress += diff * ease;
         } else {
           currentProgress = targetProgress;
         }
 
         const frameFloat = currentProgress * (TOTAL_FRAMES - 1);
+        const targetFrameIndex = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameFloat)));
 
-        // Redraw on every sub-frame movement greater than 0.008 frames
-        if (Math.abs(frameFloat - lastRenderedFrameFloat) > 0.008 || needsRedraw) {
-          renderBlended(frameFloat);
-          lastRenderedFrameFloat = frameFloat;
+        if (targetFrameIndex !== lastRenderedIndex || needsRedraw) {
+          renderCanvas(targetFrameIndex);
+          lastRenderedIndex = targetFrameIndex;
           needsRedraw = false;
         }
 
@@ -1188,19 +1292,21 @@
       onScroll();
       requestAnimationFrame(animate);
 
-      // Play footer video when in view
+      // Play footer video & trigger typography entrance animation when in view
+      const footerEl = document.getElementById('contact');
       const footerVid = document.querySelector('.footer-video');
-      if (footerVid && 'IntersectionObserver' in window) {
-        const vidObserver = new IntersectionObserver((entries) => {
+      if (footerEl && 'IntersectionObserver' in window) {
+        const footerObserver = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              footerVid.play().catch(() => {});
+              footerEl.classList.add('is-in-view');
+              if (footerVid) footerVid.play().catch(() => {});
             } else {
-              footerVid.pause();
+              if (footerVid) footerVid.pause();
             }
           });
-        }, { threshold: 0.05 });
-        vidObserver.observe(footerVid);
+        }, { threshold: 0.1 });
+        footerObserver.observe(footerEl);
       }
     })();
   </script>
